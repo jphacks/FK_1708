@@ -31,6 +31,9 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     
     var routePointArray: Array<(Double, Double)> = []
     
+    // 総距離
+    var totalDistanceInMeters: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,22 +64,16 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     }
     
     func startNavigation() {
-        if let polyline = self.routePolyline {
+        if (self.routePolyline) != nil {
             self.clearRoute()
-            // self.waypointsArray.removeAll(keepingCapacity: false)
         }
-        
-        //let origin = "\(routeStartPoint.0),\(routeStartPoint.1)"
-        // let destination = "\(routeEndPoint.0),\(routeEndPoint.1)"
-        // var waypointsArray: Array<String> = []
         
         for i in 0..<routePointArray.count-1 {
             let origin = "\(routePointArray[i].0),\(routePointArray[i].1)"
             let destination = "\(routePointArray[i+1].0),\(routePointArray[i+1].1)"
-            // waypointsArray.append( "\(routePoint.0),\(routePoint.1)")
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                
+                print("ルート検索")
                 self.mapTasks.getDirections(origin: origin, destination: destination, waypoints: nil, travelMode: self.travelMode, completionHandler: { (status, success) -> Void in
                     if success {
                         self.configureMapAndMarkersForRoute()
@@ -104,19 +101,6 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         destinationMarker.icon = GMSMarker.markerImage(with: UIColor.red)
         destinationMarker.title = self.mapTasks.destinationAddress
         
-        
-        //        if routePointArray.count > 0 {
-        //            for routePoint in routePointArray {
-        //                let lat: Double = routePoint.0
-        //                let lng: Double = routePoint.1
-        //
-        //                let marker = GMSMarker(position: CLLocationCoordinate2DMake(lat, lng))
-        //                marker.map = runMapView
-        //                marker.icon = GMSMarker.markerImage(with: UIColor.purple)
-        //
-        //                markersArray.append(marker)
-        //            }
-        //        }
     }
     
     func drawRoute() {
@@ -129,8 +113,8 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     
     
     func displayRouteInfo() {
-        print("距離：" + mapTasks.totalDistance + ", 時間：" + mapTasks.totalDuration)
-        //        lblInfo.text = mapTasks.totalDistance + "\n" + mapTasks.totalDuration
+        totalDistanceInMeters += Int(mapTasks.totalDistanceInMeters)
+        print("距離：" + String(totalDistanceInMeters) + "m") //+ mapTasks.totalDuration)
     }
     
     
@@ -147,9 +131,10 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
             for marker in markersArray {
                 marker.map = nil
             }
-            
             markersArray.removeAll(keepingCapacity: false)
         }
+        
+        totalDistanceInMeters = 0
     }
     
     /*
