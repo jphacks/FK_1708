@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lbt-El-039">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--トップ-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="Top" id="BYZ-38-t0r" customClass="TopViewController" customModule="ARTRUN" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4z-6g-MPU">
+                                <rect key="frame" x="0.0" y="284" width="375" height="220"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="220" id="JaR-yB-p6v"/>
+                                </constraints>
+                                <state key="normal" title="絵を描く"/>
+                                <connections>
+                                    <segue destination="2wj-oS-Buu" kind="show" id="3xE-hH-vgk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BMs-2R-eAl">
+                                <rect key="frame" x="0.0" y="504" width="375" height="163"/>
+                                <state key="normal" title="マイページ"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MU2-7M-VIK">
+                                <rect key="frame" x="0.0" y="64" width="375" height="220"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="220" id="cXa-yY-wG8"/>
+                                </constraints>
+                                <state key="normal" title="ランニングする"/>
+                                <connections>
+                                    <segue destination="WfJ-le-gxW" kind="show" id="Lc4-F5-UeS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="P4z-6g-MPU" firstAttribute="top" secondItem="MU2-7M-VIK" secondAttribute="bottom" id="JdW-N1-7CL"/>
+                            <constraint firstAttribute="bottom" secondItem="BMs-2R-eAl" secondAttribute="bottom" id="LaR-oB-ufp"/>
+                            <constraint firstItem="MU2-7M-VIK" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="OiF-Ng-pUy"/>
+                            <constraint firstItem="BMs-2R-eAl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="S1B-qm-eSV"/>
+                            <constraint firstItem="P4z-6g-MPU" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="WCV-dK-9zo"/>
+                            <constraint firstItem="MU2-7M-VIK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cxI-cB-v1a"/>
+                            <constraint firstItem="P4z-6g-MPU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="krh-lI-sHR"/>
+                            <constraint firstItem="BMs-2R-eAl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="oTE-hc-hlP"/>
+                            <constraint firstItem="MU2-7M-VIK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="qQ6-Yu-vVh"/>
+                            <constraint firstItem="BMs-2R-eAl" firstAttribute="top" secondItem="P4z-6g-MPU" secondAttribute="bottom" id="ucZ-DE-ycD"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="トップ" id="bXQ-OS-rvR"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="476" y="132.68365817091455"/>
+        </scene>
+        <!--CourseSelect-->
+        <scene sceneID="69y-95-e39">
+            <objects>
+                <viewControllerPlaceholder storyboardName="CourseSelect" referencedIdentifier="CourseSelect" id="WfJ-le-gxW" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="66T-vv-TCz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1072" y="-69.265367316341838"/>
+        </scene>
+        <!--Art-->
+        <scene sceneID="Mqs-14-7Vn">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Art" referencedIdentifier="Art" id="2wj-oS-Buu" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yUc-ZV-3Ov" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1072" y="114.24287856071965"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ruw-nb-ECK">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CaK-hc-03b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lbt-El-039" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2W7-fc-rNA">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="uha-FD-ba8"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="-590" y="144"/>
+        </scene>
+    </scenes>
+</document>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7v1-33-Xo0">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Running View Controller-->
+        <scene sceneID="daZ-Vq-9Bm">
+            <objects>
+                <viewController id="7v1-33-Xo0" customClass="RunningViewController" customModule="ARTRUN" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wl7-yq-A4s">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Cn-AF-3t0" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="dQ8-jQ-4ge" firstAttribute="bottom" secondItem="8Cn-AF-3t0" secondAttribute="bottom" id="fjF-d4-ri1"/>
+                            <constraint firstItem="8Cn-AF-3t0" firstAttribute="leading" secondItem="dQ8-jQ-4ge" secondAttribute="leading" id="q7Z-A3-Lwv"/>
+                            <constraint firstItem="8Cn-AF-3t0" firstAttribute="top" secondItem="dQ8-jQ-4ge" secondAttribute="top" id="tFW-Z1-QOU"/>
+                            <constraint firstItem="dQ8-jQ-4ge" firstAttribute="trailing" secondItem="8Cn-AF-3t0" secondAttribute="trailing" id="yNo-US-OiE"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="dQ8-jQ-4ge"/>
+                    </view>
+                    <connections>
+                        <outlet property="runMapView" destination="8Cn-AF-3t0" id="kCX-Pu-6zL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KM5-Tz-jAd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="60" y="10"/>
+        </scene>
+    </scenes>
+</document>
