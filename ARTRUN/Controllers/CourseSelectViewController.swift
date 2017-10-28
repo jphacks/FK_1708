@@ -16,7 +16,8 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
     let courceRunners = [5, 2, 1, 2]
     // 距離
     let courceDistances = [100, 2, 1, 2.4]
-    
+    // コースの画像
+    let courceImages = ["course.png", "course.png", "course.png", "course.png"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,28 +30,27 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
         // Dispose of any resources that can be recreated.
     }
     
-    /// セルの個数を指定するデリゲートメソッド（必須）
+    /* セルの個数を指定するデリゲートメソッド */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return courceTitles.count
     }
     
-    /// セルに値を設定するデータソースメソッド（必須）
+    /* セルに値を設定するデータソースメソッド */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // セルを取得する
+        // セルを取得
         let cell: CourseTableViewCell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath as IndexPath) as! CourseTableViewCell
         
-        // セルに表示する値を設定する
-        cell.setCell(imageName: "", courseTitle: courceTitles[indexPath.row], courseRunner: courceRunners[indexPath.row], courseDistance: courceDistances[indexPath.row])
-        
+        // セルに表示する値を設定
+        cell.setCell(imageName: courceImages[indexPath.row], courseTitle: courceTitles[indexPath.row], courseRunner: courceRunners[indexPath.row], courseDistance: courceDistances[indexPath.row])
         return cell
     }
     
-    /// セルが選択された時に呼ばれるデリゲートメソッド
+    /* セルが選択された時に呼ばれるデリゲートメソッド */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("セル番号：\(indexPath.row)")
+        // ナビゲーション画面を開く
         let storyboard: UIStoryboard = UIStoryboard(name: "Run", bundle: nil)
         let nextView = storyboard.instantiateInitialViewController()!
-        
         self.navigationController?.pushViewController(nextView, animated: true)
     }
 }
