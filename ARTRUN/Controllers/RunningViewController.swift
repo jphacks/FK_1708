@@ -18,6 +18,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         case walking
         case bicycling
     }
+    
     var locationManager = CLLocationManager()
     var didFindMyLocation = false
     var mapTasks = MapTasks()
@@ -26,18 +27,14 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     var destinationMarker: GMSMarker!
     var routePolyline: GMSPolyline!
     var markersArray: Array<GMSMarker> = []
-    // var waypointsArray: Array<String> = []
     var travelMode = TravelModes.walking
     
     var routePointArray: Array<(Double, Double)> = []
-    //var routeStartPoint: (Double, Double) = (0,0)
-    //var routeEndPoint: (Double, Double) = (0,0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        routeStartPoint = (33.50, 130.50)
-        //        routeEndPoint = (33.50, 130.50)
+        
         routePointArray.append((33.542087, 130.460736))
         routePointArray.append((33.522087, 130.500736))
         routePointArray.append((33.56087, 130.480736))

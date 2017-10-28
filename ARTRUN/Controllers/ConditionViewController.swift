@@ -21,9 +21,9 @@ class ConditionViewController: UIViewController {
     }
 
     @IBAction func courseSearchButtonTapped(_ sender: Any) {
+        // コース一覧画面を開く
         let storyboard: UIStoryboard = self.storyboard!
         let nextView = storyboard.instantiateViewController(withIdentifier: "CourseSelectView")
-        
         self.navigationController?.pushViewController(nextView, animated: true)
     }
 }
