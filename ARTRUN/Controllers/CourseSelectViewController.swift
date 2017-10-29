@@ -9,8 +9,10 @@
 import UIKit
 
 class CourseSelectViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+    @IBOutlet weak var tableView: UITableView!
+    
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var courses: Courses!
     // var runningViewController:RunningViewController!
     // var courses: AppDelegate.Course
     
@@ -23,10 +25,75 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
     // コースの画像
     // let courceImages = ["course.png", "course.png", "course.png", "course.png"]
     
+    struct Courses: Codable {
+//本番用（コメントは消すこと）
+//        struct Cource: Codable {
+//            var courceTitles = ""
+//            var courceRunners:Int
+//            var courceDistances:Double
+//            var courceImages = ""
+//        }
+//        let cource: [Cource]
+        
+        //test用
+        struct Cource: Codable {
+            var id:Int
+            var title = ""
+            var description = ""
+            var distance:Double
+            var runner_count:Int
+            var image_url = ""
+        }
+        let data: [Cource]
+        
+        var prefecture = ""
+        var image = ""
+        var sort = ""
+    }
+  
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "ランニング選択"
         // courses = appDelegate.courses
+        // create the url-request
+        
+        //Getの処理とか
+        let urlString = "https://pqqwfnd9kk.execute-api.ap-northeast-1.amazonaws.com/Prod/list"
+        let request = NSMutableURLRequest(url: NSURL(string: urlString)! as URL)
+        // set the method(HTTP-GET)
+        request.httpMethod = "GET"
+        // use NSURLSessionDataTask
+        let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            if (error == nil) {
+                let result = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
+                //print(result)
+                
+                //resultをData型に変換
+                let jsonData = result.data(using: String.Encoding.utf8.rawValue)
+                let jsonDecoder = JSONDecoder()
+                
+                do {
+                    //ここでデコード
+                    self.courses = try jsonDecoder.decode(Courses.self, from: jsonData!)
+                    DispatchQueue.main.async {
+                        // Main Threadで実行する
+                        self.tableView.reloadData()
+                    }
+                    self.courses.data.forEach { cource in
+                        print(cource)
+                    }
+                } catch DecodingError.keyNotFound(let key, let context) {
+                    print("keyNotFound: \(key): \(context)")
+                } catch {
+                    print("\(error.localizedDescription)")
+                }
+            } else {
+                print("error")
+            }
+        })
+        task.resume()
     }
     
     override func didReceiveMemoryWarning() {
@@ -36,7 +103,10 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
     
     /* セルの個数を指定するデリゲートメソッド */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return appDelegate.courses.count
+        if(self.courses==nil){
+           return 0
+        }
+        return self.courses.data.count
     }
     
     /* セルに値を設定するデータソースメソッド */
@@ -46,9 +116,7 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
         
         // セルに表示する値を設定
         // TODO:JSONで取得して来た値に書き換える (現在はAppDelegateのcourses変数に保存した値を使用)
-        cell.setCell(imageName: "course.png", courseTitle: appDelegate.courses[indexPath.row].title, courseRunner: 100, courseDistance: Double(appDelegate.courses[indexPath.row].distance) / 1000)
-        
-        // cell.setCell(imageName: courceImages[indexPath.row], courseTitle: courceTitles[indexPath.row], courseRunner: courceRunners[indexPath.row], courseDistance: courceDistances[indexPath.row])
+        cell.setCell(imageName: self.courses.data[indexPath.row].image_url, courseTitle: self.courses.data[indexPath.row].title, courseRunner: self.courses.data[indexPath.row].runner_count, courseDistance: self.courses.data[indexPath.row].distance)
         return cell
     }
     
