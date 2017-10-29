@@ -1,10 +1,10 @@
-#ARTRUN
+# ARTRUN
 
-##GitHubURL
+## GitHubURL
 
 https://github.com/AtsushiOtsubo/ARTRUN
 
-##画面遷移
+## 画面遷移
 
 https://projects.invisionapp.com//share/BFE6SL8Y3#/screens/260902603
 
@@ -54,7 +54,7 @@ GoogleMapsAPI
 AWS
 TwitterKit3
 
-###デバイス
+### デバイス
 
 ios
 
