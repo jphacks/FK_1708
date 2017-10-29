@@ -18,42 +18,42 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4z-6g-MPU">
-                                <rect key="frame" x="0.0" y="284" width="375" height="220"/>
+                                <rect key="frame" x="0.0" y="274" width="375" height="210"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="220" id="JaR-yB-p6v"/>
+                                    <constraint firstAttribute="height" constant="210" id="MvC-Ic-C5C"/>
                                 </constraints>
-                                <state key="normal" title="絵を描く"/>
+                                <state key="normal" backgroundImage="draw.png"/>
                                 <connections>
                                     <segue destination="2wj-oS-Buu" kind="show" id="3xE-hH-vgk"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BMs-2R-eAl">
-                                <rect key="frame" x="0.0" y="504" width="375" height="163"/>
-                                <state key="normal" title="マイページ"/>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MU2-7M-VIK">
-                                <rect key="frame" x="0.0" y="64" width="375" height="220"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="210"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="220" id="cXa-yY-wG8"/>
+                                    <constraint firstAttribute="height" constant="210" id="maP-ky-oDi"/>
                                 </constraints>
-                                <state key="normal" title="ランニングする"/>
+                                <state key="normal" backgroundImage="running.png"/>
                                 <connections>
                                     <segue destination="WfJ-le-gxW" kind="show" id="Lc4-F5-UeS"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BMs-2R-eAl">
+                                <rect key="frame" x="0.0" y="484" width="375" height="183"/>
+                                <state key="normal" backgroundImage="mypage.png"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="P4z-6g-MPU" firstAttribute="top" secondItem="MU2-7M-VIK" secondAttribute="bottom" id="JdW-N1-7CL"/>
-                            <constraint firstAttribute="bottom" secondItem="BMs-2R-eAl" secondAttribute="bottom" id="LaR-oB-ufp"/>
-                            <constraint firstItem="MU2-7M-VIK" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="OiF-Ng-pUy"/>
-                            <constraint firstItem="BMs-2R-eAl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="S1B-qm-eSV"/>
-                            <constraint firstItem="P4z-6g-MPU" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="WCV-dK-9zo"/>
-                            <constraint firstItem="MU2-7M-VIK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cxI-cB-v1a"/>
-                            <constraint firstItem="P4z-6g-MPU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="krh-lI-sHR"/>
-                            <constraint firstItem="BMs-2R-eAl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="oTE-hc-hlP"/>
-                            <constraint firstItem="MU2-7M-VIK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="qQ6-Yu-vVh"/>
-                            <constraint firstItem="BMs-2R-eAl" firstAttribute="top" secondItem="P4z-6g-MPU" secondAttribute="bottom" id="ucZ-DE-ycD"/>
+                            <constraint firstItem="MU2-7M-VIK" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="6Jk-O3-50Z"/>
+                            <constraint firstItem="MU2-7M-VIK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Ele-Ur-lo9"/>
+                            <constraint firstItem="MU2-7M-VIK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="HRI-8d-D8D"/>
+                            <constraint firstItem="P4z-6g-MPU" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="NcV-r2-YgR"/>
+                            <constraint firstItem="P4z-6g-MPU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="V97-ZO-2J6"/>
+                            <constraint firstAttribute="bottom" secondItem="BMs-2R-eAl" secondAttribute="bottom" id="Vbr-iB-5L1"/>
+                            <constraint firstItem="P4z-6g-MPU" firstAttribute="top" secondItem="MU2-7M-VIK" secondAttribute="bottom" id="cyO-Ox-gcz"/>
+                            <constraint firstItem="BMs-2R-eAl" firstAttribute="top" secondItem="P4z-6g-MPU" secondAttribute="bottom" id="ikg-B3-5BC"/>
+                            <constraint firstItem="BMs-2R-eAl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xdL-JO-uum"/>
+                            <constraint firstItem="BMs-2R-eAl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="yOp-e5-UgO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -82,7 +82,6 @@
         <!--Navigation Controller-->
         <scene sceneID="ruw-nb-ECK">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CaK-hc-03b" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lbt-El-039" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2W7-fc-rNA">
@@ -94,8 +93,14 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="uha-FD-ba8"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CaK-hc-03b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-590" y="144"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="draw.png" width="663" height="355"/>
+        <image name="mypage.png" width="663" height="349"/>
+        <image name="running.png" width="662" height="355"/>
+    </resources>
 </document>

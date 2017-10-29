@@ -9,13 +9,18 @@
 import UIKit
 
 class ConditionViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-    
+    @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var prefPickerView: UIPickerView!
     let prefList = ["福岡県", "熊本県", "大分県", "長崎県", "佐賀県", "宮崎県","鹿児島県"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         prefPickerView.delegate = self
+        searchButton.setTitle("検索", for: .normal)
+        searchButton.titleLabel?.font = UIFont(name: "HiraginoSans-W7", size: 30)
+        searchButton.layer.masksToBounds = true
+        searchButton.backgroundColor =  UIColor(red: 0.960, green: 0.722, blue: 0.325, alpha: 1)
+        searchButton.setTitleColor(UIColor.white, for: .normal)
     }
     
     override func didReceiveMemoryWarning() {
