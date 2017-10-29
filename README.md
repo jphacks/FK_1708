@@ -1,14 +1,16 @@
 # ARTRUN
 
-## GitHubURL
+## サーバーサイド側のソースコード(GitHub)
 
-https://github.com/AtsushiOtsubo/ARTRUN
+https://github.com/music431per/artrun_aws/tree/master
 
-## 画面遷移
+## 設計している画面遷移
 
 https://projects.invisionapp.com//share/BFE6SL8Y3#/screens/260902603
 
 ## MOVIE
+
+[![ビデオが開けなかった場合に表示されるテキスト](http://img.youtube.com/vi/F4gVfn4PkBY/0.jpg)](http://www.youtube.com/watch?v=F4gVfn4PkBY)
 
 ## Product Name
 
@@ -38,21 +40,31 @@ Tech✖️芸術✖️運動
 
 ### 特長2
 
-ランニングをするときに、いろんな人が作ったコースを手軽に共有できる。
+ランニングをするときに、利用者が作ったコースを走ることができる。
 
 ## 今後の展望
 
-ユーザーのログイン機能 コースのランキング表示
+ユーザーのログイン機能 
+
+コースのランキング表示機能
 
 ## 開発内容・開発技術
 
 ### 活用した技術
 
+地図情報や経路情報を取得するためにGoogleMapsApiを利用。また、描いたコースを利用者間で共有するためにAWSを活用しています。
+
 ### API・データ
 
 GoogleMapsAPI
-AWS
-TwitterKit3
+
+Amazon API Gateway 
+
+AWS Lambda 
+
+Amazon DynamoDB 
+
+Amazon S3
 
 ### デバイス
 
