@@ -5,6 +5,11 @@
 //  Created by Atsushi Otsubo on 2017/10/28.
 //  Copyright © 2017年 NEMUINGO. All rights reserved.
 //
+/*
+ * ランニング画面
+ * 特徴的な機能：Google Maps Apiを用いて経路検索
+ *
+ */
 
 import UIKit
 import GoogleMaps
@@ -37,34 +42,73 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     var travelMode = TravelModes.walking
     var panelMode = PanelModes.confirm
     
-    var id: Int!
+    var listId: Int!
     var coursePointArray: Array<(Double, Double)> = []
-    
-    // 総距離
     var totalDistanceInMeters: Int = 0
+    
+    // JSON受け取り用の構造体
+    var courseData: CourseData!
+    struct CourseData: Codable {
+        struct Course: Codable {
+            struct Point: Codable {
+                var lat:Double
+                var lng:Double
+            }
+            var id:Int
+            var title = ""
+            var description = ""
+            var distance:Double
+            var runner_count:Int
+            var image_url = ""
+            var author = ""
+            var center_lat: Double
+            var center_lng: Double
+            var point: [Point]
+        }
+        var data: Course
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        displayPanel() // 確認画面の表示
-        
-        // コース情報を取得
-        let course = appDelegate.courses[id]
-        coursePointArray = course.coursePointArray
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         
-        // デフォルトのマップ位置を取得
-        let camera = GMSCameraPosition.camera(withLatitude: 33.50, longitude: 130.50, zoom: 6.0)
+        let camera = GMSCameraPosition.camera(withLatitude: 33.50, longitude: 130.50, zoom: 6.0) // デフォルトのマップ位置を取得
         runMapView.camera = camera
         runMapView.delegate = self
-         startCalcRoute() // ルート検索, 描画
         
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        // AWSよりコース情報を取得
+        let urlString = "https://pqqwfnd9kk.execute-api.ap-northeast-1.amazonaws.com/Prod/detail?id=\(listId)"
+        let request = NSMutableURLRequest(url: NSURL(string: urlString)! as URL)
+        request.httpMethod = "GET"
+        let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data_, response, error in
+            if (error == nil) {
+                let result = NSString(data: data_!, encoding: String.Encoding.utf8.rawValue)!
+                print(result)
+                let jsonData = result.data(using: String.Encoding.utf8.rawValue) // Data型に変換
+                let jsonDecoder = JSONDecoder()
+                do {
+                    self.courseData = try jsonDecoder.decode(CourseData.self, from: jsonData!) // デコード
+                    
+                    for i in 0..<self.courseData.data.point.count {
+                        self.coursePointArray.append((self.courseData.data.point[i].lat, self.courseData.data.point[i].lng))
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.displayPanel() // 確認画面の表示
+                        self.startCalcRoute() // ルート検索, 描画
+                    }
+                } catch DecodingError.keyNotFound(let key, let context) {
+                    print("keyNotFound: \(key): \(context)")
+                } catch {
+                    print("\(error.localizedDescription)")
+                }
+            } else {
+                print("error")
+            }
+        })
+        task.resume()
     }
     
     func startCalcRoute() {
@@ -76,13 +120,12 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
             let origin = "\(coursePointArray[i].0),\(coursePointArray[i].1)"
             let destination = "\(coursePointArray[i+1].0),\(coursePointArray[i+1].1)"
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                print("ルート検索")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // GoogleMapApiへの接続制限対策のため一定時間待機
                 self.mapTasks.getDirections(origin: origin, destination: destination, waypoints: nil, travelMode: self.travelMode, completionHandler: { (status, success) -> Void in
                     if success {
                         self.configureMapAndMarkersForRoute()
                         self.drawRoute()
-                        self.displayRouteInfo()
+                        self.calcTotalDistance()
                     }
                     else {
                         print(status)
@@ -118,12 +161,9 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         
     }
     
-    
-    func displayRouteInfo() {
+    func calcTotalDistance() {
         totalDistanceInMeters += Int(mapTasks.totalDistanceInMeters)
-        print("距離：" + String(totalDistanceInMeters) + "m") //+ mapTasks.totalDuration)
     }
-    
     
     func clearRoute() {
         originMarker.map = nil
@@ -145,14 +185,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     }
     
     /* マップがタップされた時 */
-    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        //        if let polyline = coursePolyline {
-        //            let positionString = String(format: "%f", coordinate.latitude) + "," + String(format: "%f", coordinate.longitude)
-        //            waypointsArray.append(positionString)
-        //
-        //            recreateRoute()
-        //        }
-    }
+    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) { }
     
     /* 確認画面の表示 */
     func displayPanel() {
@@ -163,7 +196,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         switch panelMode {
         case .confirm:
             let titleLabel: UILabel = UILabel(frame:CGRect(x:0,y:0,width:screenWidth,height:40))
-            titleLabel.text = "ナスカの地上絵"
+            titleLabel.text = courseData.data.title // appDelegate.courses[].title
             titleLabel.font = UIFont(name: "HiraginoSans-W7", size: 22)
             titleLabel.textColor = UIColor.black
             titleLabel.shadowColor = UIColor.gray
@@ -176,7 +209,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
             distancelabel1.textAlignment = NSTextAlignment.center
             
             let distancelabel2: UILabel = UILabel(frame:CGRect(x:0,y:60,width:screenWidth,height:40))
-            distancelabel2.text = "-km"
+            distancelabel2.text = "\(courseData.data.distance) km" // "\(appDelegate.courses[id].distance/1000) km"
             distancelabel2.font = UIFont(name: "HiraginoSans-W7", size: 22)
             distancelabel2.textColor = UIColor.black
             distancelabel2.textAlignment = NSTextAlignment.center
@@ -224,5 +257,10 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         case .finish: break
             
         }
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 }

@@ -5,6 +5,10 @@
 //  Created by Atsushi Otsubo on 2017/10/28.
 //  Copyright © 2017年 NEMUINGO. All rights reserved.
 //
+/*
+ * 経路の生成, 距離の計算用
+ *
+ */
 
 import UIKit
 import GoogleMaps
@@ -28,12 +32,10 @@ class MapTasks: NSObject {
         super.init()
     }
     
-    
     func getDirections(origin: String!, destination: String!, waypoints: Array<String>!, travelMode: RunningViewController.TravelModes!, completionHandler: @escaping ((_ status: String,_ success: Bool) -> Void)) {
         if let originLocation = origin {
             if let destinationLocation = destination {
                 var directionsURLString = baseURLDirections + "origin=" + originLocation + "&destination=" + destinationLocation
-                //directionsURLString = directionsURLString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!
                 
                 if let routeWaypoints = waypoints {
                     directionsURLString += "&waypoints=optimize:true"
@@ -56,56 +58,36 @@ class MapTasks: NSObject {
                     default:
                         travelModeString = "driving"
                     }
-                    
-                    
                     directionsURLString += "&mode=" + travelModeString
                 }
                 
-                
-                
-                print("directionsURLString:")
-                print(directionsURLString)
                 directionsURLString = directionsURLString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!
-                print("addingPercentEncoded:")
-                print(directionsURLString)
                 let directionsURL: URL = URL(string: directionsURLString)!
                 
                 DispatchQueue.global().async {
                     DispatchQueue.main.async {
                         
                         let directionsData = try! Data(contentsOf: directionsURL)
-                        
-                        //                        var error: NSError?
-                        
                         let dictionary: Dictionary<AnyHashable, Any> = try! JSONSerialization.jsonObject(with: directionsData, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<AnyHashable, Any>
                         
-                        // jsonObject(with: directionsData!, options: JSONSerialization.ReadingOptions.mutableContainers, nil) as
                         let status = dictionary["status"] as! String
                         
                         if status == "OK" {
                             self.selectedRoute = (dictionary["routes"] as! Array<Dictionary<AnyHashable, Any>>)[0] as Dictionary<NSObject, AnyObject>
                             self.overviewPolyline = self.selectedRoute["overview_polyline"] as! Dictionary<AnyHashable, Any>
-                            //                                    self.selectedRoute("")
-                            
                             let legs = self.selectedRoute["legs"] as! Array<Dictionary<AnyHashable, Any>>
-                            
                             let startLocationDictionary = legs[0]["start_location"] as! Dictionary<AnyHashable, Any>
                             self.originCoordinate = CLLocationCoordinate2DMake(startLocationDictionary["lat"] as! Double, startLocationDictionary["lng"] as! Double)
-                            
                             let endLocationDictionary = legs[legs.count - 1]["end_location"] as! Dictionary<AnyHashable, Any>
                             self.destinationCoordinate = CLLocationCoordinate2DMake(endLocationDictionary["lat"] as! Double, endLocationDictionary["lng"] as! Double)
-                            
                             self.originAddress = origin// legs[0]["start_address"] as! String
                             self.destinationAddress = destination//legs[legs.count - 1]["end_address"] as! String
-                            
                             self.calculateTotalDistanceAndDuration()
-                            
                             completionHandler(status, true)
                         }
                         else {
                             completionHandler(status, false)
                         }
-                        //                        }
                     }
                 }
             }
@@ -120,19 +102,14 @@ class MapTasks: NSObject {
     
     func calculateTotalDistanceAndDuration() {
         let legs = self.selectedRoute["legs"] as! Array<Dictionary<AnyHashable, Any>>
-        
         totalDistanceInMeters = 0
         totalDurationInSeconds = 0
-        
         for leg in legs {
             totalDistanceInMeters += (leg["distance"] as! Dictionary<AnyHashable, Any>)["value"] as! UInt
             totalDurationInSeconds += (leg["duration"] as! Dictionary<AnyHashable, Any>)["value"] as! UInt
         }
-        
-        
         let distanceInKilometers: Double = Double(totalDistanceInMeters / 1000)
         totalDistance = "Total Distance: \(distanceInKilometers) Km"
-        
         
         let mins = totalDurationInSeconds / 60
         let hours = mins / 60
@@ -140,9 +117,7 @@ class MapTasks: NSObject {
         let remainingHours = hours % 24
         let remainingMins = mins % 60
         let remainingSecs = totalDurationInSeconds % 60
-        
         totalDuration = "Duration: \(days) d, \(remainingHours) h, \(remainingMins) mins, \(remainingSecs) secs"
     }
     
 }
-
