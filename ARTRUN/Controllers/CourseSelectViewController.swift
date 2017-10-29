@@ -26,7 +26,7 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
     // let courceImages = ["course.png", "course.png", "course.png", "course.png"]
     
     struct Courses: Codable {
-//本番用（コメントは消すこと）
+
 //        struct Cource: Codable {
 //            var courceTitles = ""
 //            var courceRunners:Int

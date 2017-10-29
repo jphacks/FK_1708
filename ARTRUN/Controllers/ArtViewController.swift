@@ -14,14 +14,6 @@ class ArtViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
     @IBOutlet weak var artMapView: GMSMapView!
     
-    /* コース情報
-    struct Course {
-        var title: String
-        var distance: Int
-        var coursePointArray: Array<(Double, Double)>
-    }
-    */
-
     var coursePointArray: Array<(Double, Double)> = []
     
     override func viewDidLoad() {
@@ -45,9 +37,65 @@ class ArtViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         }
         
         let createRouteAction = UIAlertAction(title: "Create Route", style: UIAlertActionStyle.default) { (alertAction) -> Void in
+            // create button タップ時
             let title = (addressAlert.textFields![0] as UITextField).text
             let course = AppDelegate.Course(title: title!, distance: 10, coursePointArray: self.coursePointArray)
-            self.appDelegate.courses.append(course)
+            //            self.appDelegate.courses.append(course)
+            
+            //Post
+            let urlString = "https://ae3u9y4vff.execute-api.ap-northeast-1.amazonaws.com/Prod/add"
+            let request = NSMutableURLRequest(url: URL(string: urlString)!)
+            
+            request.httpMethod = "POST"
+            request.addValue("application/text", forHTTPHeaderField: "Content-Type")
+            
+            
+            
+            var pointsObj = Array<Any>()
+            for coursePoint in course.coursePointArray {
+                var point = Dictionary<String, Any>()
+                point["lat"] = coursePoint.0
+                point["lng"] = coursePoint.1
+                pointsObj.append(point)
+            }
+            
+            var courseObj = Dictionary<String, Any>()
+            courseObj["title"] = title
+            courseObj["description"] = "description"
+            courseObj["distance"] = 10.5
+            courseObj["runner_count"] = 0
+            courseObj["image_url"] = "https://s3-ap-northeast-1.amazonaws.com/jphacks2017/image/map.jpg"
+            courseObj["author"] = "author"
+            courseObj["center_lat"] = 33.378527018372452
+            courseObj["center_lng"] = 130.40318291634321
+            courseObj["point"] = pointsObj
+            courseObj["prefecture"] = "fukuoka"
+            
+            var jsonObj = Dictionary<String, Any>()
+            jsonObj["data"] = courseObj
+            
+            var json: String = ""
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: jsonObj, options: [])
+                json = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
+            } catch {
+                print("Error!: \(error)")
+            }
+            
+            let strData = json.data(using: String.Encoding.utf8)
+            request.httpBody = strData
+            
+            // use NSURLSessionDataTask
+            let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: {data, response, error in
+                if (error == nil) {
+                    let result = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
+                    print(result)
+                } else {
+                    print("error")
+                }
+            })
+            task.resume()
+            
         }
         let closeAction = UIAlertAction(title: "Close", style: UIAlertActionStyle.cancel) { (alertAction) -> Void in
             
@@ -80,7 +128,7 @@ class ArtViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         polyline.strokeWidth = 3.0 //線の太さ
         polyline.map = artMapView //線を描画
         polyline.isTappable = true
-//        polyline.title = "1"
+        //        polyline.title = "1"
     }
     
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
