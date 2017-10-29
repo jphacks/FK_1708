@@ -6,8 +6,10 @@
 //  Copyright © 2017年 NEMUINGO. All rights reserved.
 //
 /*
- * お絵かき機能
- * 描いた絵の投稿機能
+ * お絵かき画面
+ * 特徴的な機能：
+ * GoogleMap上にお絵かきできる機能
+ * 描いた絵の情報をAWSへPOSTで投げる機能
  *
  */
 

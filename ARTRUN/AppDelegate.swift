@@ -14,21 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    // コース情報
-    struct Course {
-        var title: String
-        var distance: Int
-        var coursePointArray: Array<(Double, Double)>
-        
-        init(title:String, distance:Int, coursePointArray: Array<(Double, Double)>) {
-            self.title = title
-            self.distance = distance
-            self.coursePointArray = coursePointArray
-        }
-    }
-    // 共通変数
-    var courses: Array<Course> = []
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey("AIzaSyBRM9l-OI4d2YvI2WNcL54IGe8b_UJNNvs")
