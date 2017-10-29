@@ -163,7 +163,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         switch panelMode {
         case .confirm:
             let titleLabel: UILabel = UILabel(frame:CGRect(x:0,y:0,width:screenWidth,height:40))
-            titleLabel.text = "ナスカの地上絵"
+            titleLabel.text = appDelegate.courses[id].title
             titleLabel.font = UIFont(name: "HiraginoSans-W7", size: 22)
             titleLabel.textColor = UIColor.black
             titleLabel.shadowColor = UIColor.gray
@@ -176,7 +176,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
             distancelabel1.textAlignment = NSTextAlignment.center
             
             let distancelabel2: UILabel = UILabel(frame:CGRect(x:0,y:60,width:screenWidth,height:40))
-            distancelabel2.text = "-km"
+            distancelabel2.text = "\(appDelegate.courses[id].distance/1000) km"
             distancelabel2.font = UIFont(name: "HiraginoSans-W7", size: 22)
             distancelabel2.textColor = UIColor.black
             distancelabel2.textAlignment = NSTextAlignment.center

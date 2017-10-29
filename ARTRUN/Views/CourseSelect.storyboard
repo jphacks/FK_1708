@@ -46,10 +46,11 @@
                                 <rect key="frame" x="306" y="392" width="51" height="31"/>
                             </switch>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ShA-Dc-0vh" userLabel="SearchButton">
-                                <rect key="frame" x="0.0" y="517" width="375" height="150"/>
+                                <rect key="frame" x="0.0" y="587" width="375" height="80"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="o49-Gk-WEA"/>
+                                    <constraint firstAttribute="height" constant="80" id="0Kz-4y-Hxp"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="検索"/>
                                 <connections>
                                     <action selector="courseSearchButtonTapped:" destination="7Ez-Rd-xE7" eventType="touchUpInside" id="EBz-Ze-ucf"/>
@@ -60,16 +61,16 @@
                         <constraints>
                             <constraint firstItem="7Fw-lh-SZV" firstAttribute="top" secondItem="sNG-6q-bUP" secondAttribute="bottom" constant="20" id="0XU-Oa-zC0"/>
                             <constraint firstItem="kGI-6H-fov" firstAttribute="leading" secondItem="2Es-qt-NbL" secondAttribute="leading" constant="20" id="4ra-Gi-q8M"/>
+                            <constraint firstItem="ShA-Dc-0vh" firstAttribute="bottom" secondItem="2Es-qt-NbL" secondAttribute="bottom" id="6s9-Et-cze"/>
                             <constraint firstItem="SpH-u8-7vv" firstAttribute="top" secondItem="kGI-6H-fov" secondAttribute="bottom" constant="20" id="7Dj-Kp-jCp"/>
                             <constraint firstItem="sNG-6q-bUP" firstAttribute="top" secondItem="2Es-qt-NbL" secondAttribute="top" constant="20" id="Fkp-bf-Caa"/>
                             <constraint firstItem="h2f-Dq-paN" firstAttribute="top" secondItem="kGI-6H-fov" secondAttribute="bottom" constant="25" id="KIH-EE-D05"/>
-                            <constraint firstItem="ShA-Dc-0vh" firstAttribute="leading" secondItem="2Es-qt-NbL" secondAttribute="leading" id="Mt3-7q-Os2"/>
-                            <constraint firstItem="ShA-Dc-0vh" firstAttribute="trailing" secondItem="2Es-qt-NbL" secondAttribute="trailing" id="T4D-5M-KKw"/>
+                            <constraint firstItem="ShA-Dc-0vh" firstAttribute="trailing" secondItem="2Es-qt-NbL" secondAttribute="trailing" id="NuH-ll-IuY"/>
+                            <constraint firstItem="ShA-Dc-0vh" firstAttribute="leading" secondItem="2Es-qt-NbL" secondAttribute="leading" id="VT0-eU-WUc"/>
                             <constraint firstItem="sNG-6q-bUP" firstAttribute="leading" secondItem="2Es-qt-NbL" secondAttribute="leading" constant="20" id="YmP-Kv-nVv"/>
                             <constraint firstItem="h2f-Dq-paN" firstAttribute="leading" secondItem="2Es-qt-NbL" secondAttribute="leading" constant="20" id="ddI-90-QG8"/>
                             <constraint firstItem="2Es-qt-NbL" firstAttribute="trailing" secondItem="SpH-u8-7vv" secondAttribute="trailing" constant="20" id="dvu-kB-1Xa"/>
                             <constraint firstItem="7Fw-lh-SZV" firstAttribute="leading" secondItem="2Es-qt-NbL" secondAttribute="leading" id="pjh-qy-btu"/>
-                            <constraint firstItem="ShA-Dc-0vh" firstAttribute="bottom" secondItem="2Es-qt-NbL" secondAttribute="bottom" id="pyc-go-NF4"/>
                             <constraint firstItem="7Fw-lh-SZV" firstAttribute="trailing" secondItem="2Es-qt-NbL" secondAttribute="trailing" id="yCk-Fz-kK4"/>
                             <constraint firstItem="kGI-6H-fov" firstAttribute="top" secondItem="7Fw-lh-SZV" secondAttribute="bottom" constant="40" id="yZg-C2-Zce"/>
                         </constraints>
@@ -78,6 +79,7 @@
                     <navigationItem key="navigationItem" title="ランニング条件" id="KyC-oT-fqY"/>
                     <connections>
                         <outlet property="prefPickerView" destination="7Fw-lh-SZV" id="IXa-AI-fpH"/>
+                        <outlet property="searchButton" destination="ShA-Dc-0vh" id="0uh-iG-we8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cfy-aA-ot1" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -46,6 +46,7 @@
                     </view>
                     <connections>
                         <outlet property="artMapView" destination="SPy-J5-BLy" id="vn8-jA-3ii"/>
+                        <outlet property="postButton" destination="cJp-7V-bPu" id="1yQ-PZ-J1W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HiY-g1-5ef" userLabel="First Responder" sceneMemberID="firstResponder"/>
