@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--ランニング条件-->
+        <!--Condition View Controller-->
         <scene sceneID="9Is-bP-ycv">
             <objects>
-                <viewController storyboardIdentifier="CourseSelect" id="7Ez-Rd-xE7" customClass="ConditionViewController" customModule="ARTRUN" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CourseSelect" id="7Ez-Rd-xE7" userLabel="Condition View Controller" customClass="ConditionViewController" customModule="ARTRUN" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2Js-eM-bvQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -73,6 +73,9 @@
                         <viewLayoutGuide key="safeArea" id="2Es-qt-NbL"/>
                     </view>
                     <navigationItem key="navigationItem" title="ランニング条件" id="KyC-oT-fqY"/>
+                    <connections>
+                        <outlet property="prefPickerView" destination="7Fw-lh-SZV" id="IXa-AI-fpH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cfy-aA-ot1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

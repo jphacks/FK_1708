@@ -11,6 +11,7 @@ import GoogleMaps
 
 class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     
+    var appDelegate = UIApplication.shared.delegate as! AppDelegate
     @IBOutlet weak var runMapView: GMSMapView!
     
     enum TravelModes: Int {
@@ -25,11 +26,13 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     var locationMarker: GMSMarker!
     var originMarker: GMSMarker!
     var destinationMarker: GMSMarker!
-    var routePolyline: GMSPolyline!
+    var coursePolyline: GMSPolyline!
     var markersArray: Array<GMSMarker> = []
     var travelMode = TravelModes.walking
     
-    var routePointArray: Array<(Double, Double)> = []
+    
+    var id: Int!
+    var coursePointArray: Array<(Double, Double)> = []
     
     // 総距離
     var totalDistanceInMeters: Int = 0
@@ -37,13 +40,14 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        routePointArray.append((33.542087, 130.460736))
-        routePointArray.append((33.522087, 130.500736))
-        routePointArray.append((33.56087, 130.480736))
-        routePointArray.append((33.522087, 130.480736))
-        routePointArray.append((33.562087, 130.500736))
-        routePointArray.append((33.542087, 130.460736))
+        let course = appDelegate.courses[id]
+        coursePointArray = course.coursePointArray
+//        coursePointArray.append((33.542087, 130.460736))
+//        coursePointArray.append((33.522087, 130.500736))
+//        coursePointArray.append((33.56087, 130.480736))
+//        coursePointArray.append((33.522087, 130.480736))
+//        coursePointArray.append((33.562087, 130.500736))
+//        coursePointArray.append((33.542087, 130.460736))
         
         
         locationManager.delegate = self
@@ -64,13 +68,13 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     }
     
     func startNavigation() {
-        if (self.routePolyline) != nil {
+        if (self.coursePolyline) != nil {
             self.clearRoute()
         }
         
-        for i in 0..<routePointArray.count-1 {
-            let origin = "\(routePointArray[i].0),\(routePointArray[i].1)"
-            let destination = "\(routePointArray[i+1].0),\(routePointArray[i+1].1)"
+        for i in 0..<coursePointArray.count-1 {
+            let origin = "\(coursePointArray[i].0),\(coursePointArray[i].1)"
+            let destination = "\(coursePointArray[i+1].0),\(coursePointArray[i+1].1)"
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 print("ルート検索")
@@ -107,8 +111,11 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         let route = mapTasks.overviewPolyline["points"] as! String
         
         let path: GMSPath = GMSPath(fromEncodedPath: route)!
-        routePolyline = GMSPolyline(path: path)
-        routePolyline.map = runMapView
+        coursePolyline = GMSPolyline(path: path)
+        coursePolyline.spans = [GMSStyleSpan(style: GMSStrokeStyle.solidColor(UIColor.red) )]
+        coursePolyline.strokeWidth = 3.0 //線の太さ
+        coursePolyline.map = runMapView
+        
     }
     
     
@@ -121,11 +128,11 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     func clearRoute() {
         originMarker.map = nil
         destinationMarker.map = nil
-        routePolyline.map = nil
+        coursePolyline.map = nil
         
         originMarker = nil
         destinationMarker = nil
-        routePolyline = nil
+        coursePolyline = nil
         
         if markersArray.count > 0 {
             for marker in markersArray {
@@ -139,7 +146,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     
     /*
      func recreateRoute() {
-     if let polyline = routePolyline {
+     if let polyline = coursePolyline {
      clearRoute()
      
      mapTasks.getDirections(origin: mapTasks.originAddress, destination: mapTasks.destinationAddress, waypoints: waypointsArray, travelMode: travelMode, completionHandler: { (status, success) -> Void in
@@ -159,7 +166,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     
     /* マップがタップされた時 */
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        //        if let polyline = routePolyline {
+        //        if let polyline = coursePolyline {
         //            let positionString = String(format: "%f", coordinate.latitude) + "," + String(format: "%f", coordinate.longitude)
         //            waypointsArray.append(positionString)
         //

@@ -21,6 +21,7 @@
 		3DE1ACF51FA47BDF008DD586 /* RunningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE1ACF41FA47BDF008DD586 /* RunningViewController.swift */; };
 		3DE1ACF81FA47F59008DD586 /* MapTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE1ACF71FA47F59008DD586 /* MapTasks.swift */; };
 		3DE1ACFB1FA52098008DD586 /* course.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DE1ACFA1FA52098008DD586 /* course.png */; };
+		3DE1ACFD1FA52659008DD586 /* ArtViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE1ACFC1FA52659008DD586 /* ArtViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		3DE1ACF41FA47BDF008DD586 /* RunningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningViewController.swift; sourceTree = "<group>"; };
 		3DE1ACF71FA47F59008DD586 /* MapTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTasks.swift; sourceTree = "<group>"; };
 		3DE1ACFA1FA52098008DD586 /* course.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = course.png; path = ../../../../../Desktop/course.png; sourceTree = "<group>"; };
+		3DE1ACFC1FA52659008DD586 /* ArtViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtViewController.swift; sourceTree = "<group>"; };
 		5CD1AAACF66FAA069B24690B /* Pods-ARTRUN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTRUN.release.xcconfig"; path = "Pods/Target Support Files/Pods-ARTRUN/Pods-ARTRUN.release.xcconfig"; sourceTree = "<group>"; };
 		5F0ED73B033315134B23F02A /* Pods-ARTRUN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARTRUN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ARTRUN/Pods-ARTRUN.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,6 +109,7 @@
 				3DE1ACEC1FA45E35008DD586 /* ConditionViewController.swift */,
 				3DE1ACEE1FA466DF008DD586 /* CourseSelectViewController.swift */,
 				3DE1ACF41FA47BDF008DD586 /* RunningViewController.swift */,
+				3DE1ACFC1FA52659008DD586 /* ArtViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DE1ACFD1FA52659008DD586 /* ArtViewController.swift in Sources */,
 				3DE1ACED1FA45E35008DD586 /* ConditionViewController.swift in Sources */,
 				3DE1ACEF1FA466DF008DD586 /* CourseSelectViewController.swift in Sources */,
 				3DE1ACD71FA4519C008DD586 /* TopViewController.swift in Sources */,
