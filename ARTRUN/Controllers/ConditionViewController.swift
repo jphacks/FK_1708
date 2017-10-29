@@ -15,7 +15,7 @@ class ConditionViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        prefPickerView.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -29,13 +29,12 @@ class ConditionViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
     //PickerViewに表示する行数を返す
-    func pickerView(_ prefPickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return prefList.count
     }
     
-    //データを返すメソッド
     //Picker Viewに表示する値を返す
-    func pickerView(_ prefPickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return prefList[row]
     }
    
