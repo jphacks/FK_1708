@@ -13,11 +13,17 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
     @IBOutlet weak var runMapView: GMSMapView!
-    
+    @IBOutlet weak var panelView: UIView!
     enum TravelModes: Int {
         case driving
         case walking
         case bicycling
+    }
+    enum PanelModes: Int {
+        case confirm
+        case running
+        case pausing
+        case finish
     }
     
     var locationManager = CLLocationManager()
@@ -29,7 +35,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     var coursePolyline: GMSPolyline!
     var markersArray: Array<GMSMarker> = []
     var travelMode = TravelModes.walking
-    
+    var panelMode = PanelModes.confirm
     
     var id: Int!
     var coursePointArray: Array<(Double, Double)> = []
@@ -40,26 +46,20 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        displayPanel() // 確認画面の表示
+        
+        // コース情報を取得
         let course = appDelegate.courses[id]
         coursePointArray = course.coursePointArray
-//        coursePointArray.append((33.542087, 130.460736))
-//        coursePointArray.append((33.522087, 130.500736))
-//        coursePointArray.append((33.56087, 130.480736))
-//        coursePointArray.append((33.522087, 130.480736))
-//        coursePointArray.append((33.562087, 130.500736))
-//        coursePointArray.append((33.542087, 130.460736))
-        
-        
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         
+        // デフォルトのマップ位置を取得
         let camera = GMSCameraPosition.camera(withLatitude: 33.50, longitude: 130.50, zoom: 6.0)
-        
         runMapView.camera = camera
         runMapView.delegate = self
+         startCalcRoute() // ルート検索, 描画
         
-        startNavigation()
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func didReceiveMemoryWarning() {
@@ -67,7 +67,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         // Dispose of any resources that can be recreated.
     }
     
-    func startNavigation() {
+    func startCalcRoute() {
         if (self.coursePolyline) != nil {
             self.clearRoute()
         }
@@ -144,26 +144,6 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         totalDistanceInMeters = 0
     }
     
-    /*
-     func recreateRoute() {
-     if let polyline = coursePolyline {
-     clearRoute()
-     
-     mapTasks.getDirections(origin: mapTasks.originAddress, destination: mapTasks.destinationAddress, waypoints: waypointsArray, travelMode: travelMode, completionHandler: { (status, success) -> Void in
-     
-     if success {
-     self.configureMapAndMarkersForRoute()
-     self.drawRoute()
-     self.displayRouteInfo()
-     }
-     else {
-     print(status)
-     }
-     })
-     }
-     }
-     */
-    
     /* マップがタップされた時 */
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         //        if let polyline = coursePolyline {
@@ -174,4 +154,75 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         //        }
     }
     
+    /* 確認画面の表示 */
+    func displayPanel() {
+        // TODO: クリア
+        
+        // 表示
+        let screenWidth = UIScreen.main.bounds.size.width
+        switch panelMode {
+        case .confirm:
+            let titleLabel: UILabel = UILabel(frame:CGRect(x:0,y:0,width:screenWidth,height:40))
+            titleLabel.text = "ナスカの地上絵"
+            titleLabel.font = UIFont(name: "HiraginoSans-W7", size: 22)
+            titleLabel.textColor = UIColor.black
+            titleLabel.shadowColor = UIColor.gray
+            titleLabel.textAlignment = NSTextAlignment.center
+            
+            let distancelabel1: UILabel = UILabel(frame:CGRect(x:0,y:40,width:screenWidth,height:20))
+            distancelabel1.text = "距離"
+            distancelabel1.font = UIFont(name: "HiraginoSans-W3", size: 14)
+            distancelabel1.textColor = UIColor.gray
+            distancelabel1.textAlignment = NSTextAlignment.center
+            
+            let distancelabel2: UILabel = UILabel(frame:CGRect(x:0,y:60,width:screenWidth,height:40))
+            distancelabel2.text = "-km"
+            distancelabel2.font = UIFont(name: "HiraginoSans-W7", size: 22)
+            distancelabel2.textColor = UIColor.black
+            distancelabel2.textAlignment = NSTextAlignment.center
+            
+            let runninngStartButton: UIButton = UIButton(frame:CGRect(x:0,y:100,width:screenWidth,height:70))
+            runninngStartButton.setTitle("スタート", for: .normal)
+            runninngStartButton.titleLabel?.font = UIFont(name: "HiraginoSans-W7", size: 22)
+            runninngStartButton.layer.masksToBounds = true
+            runninngStartButton.backgroundColor =  UIColor(red: 0.960, green: 0.722, blue: 0.325, alpha: 1)
+            panelView.addSubview(titleLabel)
+            panelView.addSubview(distancelabel1)
+            panelView.addSubview(distancelabel2)
+            panelView.addSubview(runninngStartButton)
+            
+        case .running:
+            let pauseButton: UIButton = UIButton(frame:CGRect(x:0,y:0,width:screenWidth/2,height:170))
+            pauseButton.setTitle("一時停止", for: .normal)
+            pauseButton.titleLabel?.font = UIFont(name: "HiraginoSans-W7", size: 22)
+            pauseButton.layer.masksToBounds = true
+            pauseButton.backgroundColor =  UIColor(red: 0.960, green: 0.722, blue: 0.325, alpha: 1)
+            
+            let finishButton: UIButton = UIButton(frame:CGRect(x:screenWidth/2,y:0,width:screenWidth,height:170))
+            finishButton.setTitle("終了", for: .normal)
+            finishButton.titleLabel?.font = UIFont(name: "HiraginoSans-W7", size: 22)
+            finishButton.layer.masksToBounds = true
+            finishButton.backgroundColor =  UIColor(red: 0.960, green: 0.722, blue: 0.325, alpha: 1)
+            panelView.addSubview(pauseButton)
+            panelView.addSubview(finishButton)
+            
+        case .pausing:
+            let continueButton: UIButton = UIButton(frame:CGRect(x:0,y:0,width:screenWidth/2,height:170))
+            continueButton.setTitle("続きから", for: .normal)
+            continueButton.titleLabel?.font = UIFont(name: "HiraginoSans-W7", size: 22)
+            continueButton.layer.masksToBounds = true
+            continueButton.backgroundColor =  UIColor(red: 0.960, green: 0.722, blue: 0.325, alpha: 1)
+            
+            let finishButton: UIButton = UIButton(frame:CGRect(x:screenWidth/2,y:0,width:screenWidth,height:170))
+            finishButton.setTitle("終了", for: .normal)
+            finishButton.titleLabel?.font = UIFont(name: "HiraginoSans-W7", size: 22)
+            finishButton.layer.masksToBounds = true
+            finishButton.backgroundColor =  UIColor(red: 0.960, green: 0.722, blue: 0.325, alpha: 1)
+            panelView.addSubview(continueButton)
+            panelView.addSubview(finishButton)
+            
+        case .finish: break
+            
+        }
+    }
 }
