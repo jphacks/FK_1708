@@ -20,6 +20,9 @@
                         <subviews>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fw-lh-SZV">
                                 <rect key="frame" x="0.0" y="88" width="375" height="216"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="7Ez-Rd-xE7" id="cT8-0L-9f4"/>
+                                </connections>
                             </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="場所の選択" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sNG-6q-bUP" userLabel="Label">
                                 <rect key="frame" x="20" y="40" width="117" height="27.5"/>
