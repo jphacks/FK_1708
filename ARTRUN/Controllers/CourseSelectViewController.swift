@@ -20,18 +20,27 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
     
     struct Courses: Codable {
         struct Cource: Codable {
-            var id:Int
+            struct Point: Codable {
+                var lat:Double
+                var lng:Double
+            }
+            var id:String
             var title = ""
             var description = ""
-            var distance: Double
-            var runner_count: Int
+            var prefecture = ""
+            var distance:Double
+            var runner_count:Int
             var image_url = ""
+            var author = ""
+            var center_lat: Double
+            var center_lng: Double
+            var point: [Point]
         }
-        let data: [Cource]
+        var data: [Cource]
         
-        var prefecture = ""
-        var image = ""
-        var sort = ""
+        //        var prefecture = ""
+        //        var image = ""
+        //        var sort = ""
     }
     
     override func viewDidLoad() {
@@ -39,12 +48,14 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
         navigationItem.title = "ランニング選択"
         
         // AWSよりコース一覧を取得
-        let urlString = "https://pqqwfnd9kk.execute-api.ap-northeast-1.amazonaws.com/Prod/list"
+        let urlString = "https://ae3u9y4vff.execute-api.ap-northeast-1.amazonaws.com/Prod/list"
+        print("urlString=\(urlString)")
         let request = NSMutableURLRequest(url: NSURL(string: urlString)! as URL)
         request.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
             if (error == nil) {
                 let result = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
+                print("result=\(result)")
                 let jsonData = result.data(using: String.Encoding.utf8.rawValue) // Data型に変換
                 let jsonDecoder = JSONDecoder()
                 do {
@@ -87,7 +98,8 @@ class CourseSelectViewController: UIViewController, UITableViewDelegate, UITable
         // ナビゲーション画面を開く
         let storyboard: UIStoryboard = UIStoryboard(name: "Run", bundle: nil)
         let nextView = storyboard.instantiateInitialViewController() as! RunningViewController
-        nextView.listId = indexPath.row
+        print("id=\(courses.data[indexPath.row].id)")
+        nextView.courseId = courses.data[indexPath.row].id
         self.navigationController?.pushViewController(nextView, animated: true)
     }
     

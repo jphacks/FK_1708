@@ -16,7 +16,6 @@ import GoogleMaps
 
 class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     
-    var appDelegate = UIApplication.shared.delegate as! AppDelegate
     @IBOutlet weak var runMapView: GMSMapView!
     @IBOutlet weak var panelView: UIView!
     enum TravelModes: Int {
@@ -42,30 +41,28 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
     var travelMode = TravelModes.walking
     var panelMode = PanelModes.confirm
     
-    var listId: Int!
+    var courseId: String!
     var coursePointArray: Array<(Double, Double)> = []
     var totalDistanceInMeters: Int = 0
     
     // JSON受け取り用の構造体
-    var courseData: CourseData!
-    struct CourseData: Codable {
-        struct Course: Codable {
-            struct Point: Codable {
-                var lat:Double
-                var lng:Double
-            }
-            var id:Int
-            var title = ""
-            var description = ""
-            var distance:Double
-            var runner_count:Int
-            var image_url = ""
-            var author = ""
-            var center_lat: Double
-            var center_lng: Double
-            var point: [Point]
+    var course: Course!
+    struct Course: Codable {
+        struct Point: Codable {
+            var order:Int
+            var lat:Double
+            var lng:Double
         }
-        var data: Course
+        var id:String
+        var title = ""
+        var description = ""
+        var distance:Double
+        var runner_count:Int
+        var image_url = ""
+        var author = ""
+        var center_lat: Double
+        var center_lng: Double
+        var point: [Point]
     }
     
     override func viewDidLoad() {
@@ -79,7 +76,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         runMapView.delegate = self
         
         // AWSよりコース情報を取得
-        let urlString = "https://pqqwfnd9kk.execute-api.ap-northeast-1.amazonaws.com/Prod/detail?id=\(listId)"
+        let urlString = "https://ae3u9y4vff.execute-api.ap-northeast-1.amazonaws.com/Prod/detail?id=\(courseId!)"
         let request = NSMutableURLRequest(url: NSURL(string: urlString)! as URL)
         request.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data_, response, error in
@@ -89,10 +86,10 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
                 let jsonData = result.data(using: String.Encoding.utf8.rawValue) // Data型に変換
                 let jsonDecoder = JSONDecoder()
                 do {
-                    self.courseData = try jsonDecoder.decode(CourseData.self, from: jsonData!) // デコード
+                    self.course = try jsonDecoder.decode(Course.self, from: jsonData!) // デコード
                     
-                    for i in 0..<self.courseData.data.point.count {
-                        self.coursePointArray.append((self.courseData.data.point[i].lat, self.courseData.data.point[i].lng))
+                    for i in 0..<self.course.point.count {
+                        self.coursePointArray.append((self.course.point[i].lat, self.course.point[i].lng))
                     }
                     
                     DispatchQueue.main.async {
@@ -119,19 +116,17 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         for i in 0..<coursePointArray.count-1 {
             let origin = "\(coursePointArray[i].0),\(coursePointArray[i].1)"
             let destination = "\(coursePointArray[i+1].0),\(coursePointArray[i+1].1)"
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // GoogleMapApiへの接続制限対策のため一定時間待機
-                self.mapTasks.getDirections(origin: origin, destination: destination, waypoints: nil, travelMode: self.travelMode, completionHandler: { (status, success) -> Void in
-                    if success {
-                        self.configureMapAndMarkersForRoute()
-                        self.drawRoute()
-                        self.calcTotalDistance()
-                    }
-                    else {
-                        print(status)
-                    }
-                })
-            }
+            self.mapTasks.getDirections(origin: origin, destination: destination, waypoints: nil, travelMode: self.travelMode, completionHandler: { (status, success) -> Void in
+                if success {
+                    self.configureMapAndMarkersForRoute()
+                    self.drawRoute()
+                    self.calcTotalDistance()
+                    print("Drawed route \(i)")
+                }
+                else {
+                    print(status)
+                }
+            })
         }
     }
     
@@ -147,7 +142,6 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         destinationMarker.map = self.runMapView
         destinationMarker.icon = GMSMarker.markerImage(with: UIColor.red)
         destinationMarker.title = self.mapTasks.destinationAddress
-        
     }
     
     func drawRoute() {
@@ -158,7 +152,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         coursePolyline.spans = [GMSStyleSpan(style: GMSStrokeStyle.solidColor(UIColor.red) )]
         coursePolyline.strokeWidth = 3.0 //線の太さ
         coursePolyline.map = runMapView
-        
+        Thread.sleep(forTimeInterval: 0.5) // GoogleMapApiへの接続制限対策のため一定時間待機(TODO:非同期でする)
     }
     
     func calcTotalDistance() {
@@ -196,7 +190,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
         switch panelMode {
         case .confirm:
             let titleLabel: UILabel = UILabel(frame:CGRect(x:0,y:0,width:screenWidth,height:40))
-            titleLabel.text = courseData.data.title // appDelegate.courses[].title
+            titleLabel.text = course.title // appDelegate.courses[].title
             titleLabel.font = UIFont(name: "HiraginoSans-W7", size: 22)
             titleLabel.textColor = UIColor.black
             titleLabel.shadowColor = UIColor.gray
@@ -209,7 +203,7 @@ class RunningViewController: UIViewController, CLLocationManagerDelegate, GMSMap
             distancelabel1.textAlignment = NSTextAlignment.center
             
             let distancelabel2: UILabel = UILabel(frame:CGRect(x:0,y:60,width:screenWidth,height:40))
-            distancelabel2.text = "\(courseData.data.distance) km" // "\(appDelegate.courses[id].distance/1000) km"
+            distancelabel2.text = "\(course.distance) km" // "\(appDelegate.courses[id].distance/1000) km"
             distancelabel2.font = UIFont(name: "HiraginoSans-W7", size: 22)
             distancelabel2.textColor = UIColor.black
             distancelabel2.textAlignment = NSTextAlignment.center

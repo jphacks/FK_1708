@@ -18,7 +18,6 @@ import GoogleMaps
 
 class ArtViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     
-    var appDelegate = UIApplication.shared.delegate as! AppDelegate
     var totalDistanceInMeters: Int = 0
     
     @IBOutlet weak var artMapView: GMSMapView!
@@ -56,17 +55,20 @@ class ArtViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
             request.addValue("application/text", forHTTPHeaderField: "Content-Type")
             
             var pointsObj = Array<Any>()
+            var order = 0
             for coursePoint in self.coursePointArray {
                 var point = Dictionary<String, Any>()
+                point["order"] = order
                 point["lat"] = coursePoint.0
                 point["lng"] = coursePoint.1
                 pointsObj.append(point)
+                order += 1
             }
             
             var courseObj = Dictionary<String, Any>()
             courseObj["title"] = title
             courseObj["description"] = "description"
-            courseObj["distance"] = 10.5
+            courseObj["distance"] = (Double(self.totalDistanceInMeters) / 1000.0)
             courseObj["runner_count"] = 0
             courseObj["image_url"] = "https://s3-ap-northeast-1.amazonaws.com/jphacks2017/image/map.jpg"
             courseObj["author"] = "author"
